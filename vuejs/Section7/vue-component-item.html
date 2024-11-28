@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liaison bidirectionnelle</title>
+</head>
+<body>
+    <div id="app">
+     <h1>Votre boulangerie</h1>
+     <ul>
+        <item-commande v-for="item of items" :nom="item.nom" :prix-h-t="item.prix"></item-commande>
+        
+     </ul>
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const itemCommande={
+            template: 
+                `<li> {{nom}} : {{prixTTC}} EUR </li>`,
+          
+            props:{
+                nom:      {type:String,default:'baguette'},
+                prixHT:   {type:Number,default:1.2, validator:prix=>prix > 0 }
+            },
+            computed:{
+                prixTTC(){
+                    return this.prixHT*1.205;
+                }
+            }
+        }
+        const app = Vue.createApp({
+           components:{
+            itemCommande
+           },
+           data(){
+            return{
+                items:[
+                    {nom:'baguette',prix:1.2},
+                    {nom:'croissant',prix:2.3},
+                    {nom:'pain campagne',prix:3.2}],
+            };
+           }
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des colis:</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Transporteur : {{transporteur}} </h1>
+        <h2>Livraison : {{livraison.identifiant}} </h2>
+       <selecteur-format v-model="formatSelectionne"></selecteur-format>
+        <tableau-colis :colis="colisFormatSelectionne" @enlever="onEnlever"></tableau-colis>
+        <p>Format sélectionné : {{formatSelectionne}}</p>
+    </div>
+    <script src="vue.global.js"></script>
+    <script src="tableauColis.js"></script>
+    <script src="selecteurFormat.js"></script>
+    <script>
+        const app = Vue.createApp({
+            components:{
+                tableauColis,
+                selecteurFormat
+            },
+            mounted() {
+                this.chargeLivraison();
+            },
+            data(){
+                return {
+                    livraison:{
+                        identifiant:'alant69111',
+                        colis: [
+                            { id: 1, format: 0, poids: 1.2 },
+                            { id: 2, format: 1, poids: 2.8 },
+                            { id: 3, format: 2, poids: 3.11 },
+                            // Ajoutez d'autres colis si nécessaire
+                        ]
+                        },
+                        transporteur:'alant Transport 68',
+                        formatSelectionne:0,
+                        message:''
+
+                    };
+                
+
+            },
+            computed:{
+                colisFormatSelectionne(){
+                   return  this.formatSelectionne===0 ?
+                    this.livraison.colis : this.livraison.colis.filter(c => c.format === this.formatSelectionne)
+                }
+
+            },
+            methods:{
+                enleveColisId(id){
+                   
+                 let index = this.livraison.colis.findIndex(c => c.id === id);
+                 if(index !=-1){
+                    return this.livraison.colis.splice(index,1);
+                 }
+                },
+                onEnlever(e) {
+                    this.enleveColisId(e);
+                    
+                },
+                erreurConnexion(msg){
+                    return this.message = msg;
+                },
+               async chargeLivraison(){
+                const url = new URL(`http://livrci.fr/${this.transporteur}/livraison`);
+                 try {
+                      let response = await fetch(url);
+                      if(response.ok){
+                         this.livraison = response.json();
+                      }else{
+                        this.erreurConnexion("Impossible d'obtenir la livraison")
+                      }
+                    
+                 } catch (error) {
+                    this.erreurConnexion("Impossible d'obtenir la livraison")
+                 }
+
+                },
+                chargeLivraison(){
+                    let xhr = new XMLHttpRequest();
+                    xhr.onload = () =>{
+                        if(xhr.status === 200){
+                            this.livraison = JSON.parse(xhr.response);
+                        }else{
+                            this.erreurConnexion("Impossible d'obtenir la livraison")
+                        }
+                    }
+                    xhr.onerror = () =>{
+                        this.erreurConnexion("Impossible d'obtenir la livraison")
+                    }
+                    const url = new URL(`http://livrci.fr/${this.transporteur}/livraison`);
+                    xhr.open('GET',url);
+                    xhr.send(null);
+                }
+                
+            }
+                
+
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

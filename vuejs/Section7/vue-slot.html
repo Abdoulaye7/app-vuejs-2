@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue slot</title>
+    <style>
+        .facture{
+            border: 1px solid red;
+            padding-left: 20px;
+        }
+        .footer{
+            color:blue;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+    <affichage-facture>
+        <template v-slot:default>
+          <h2>Commande de tartres</h2>
+          <p>Vous avez commandé une <em>tartre à la pomme</em>pour 5 EUR</p>
+        </template>
+        <template v-slot:footer>
+        <p>Condition générales de fentes</p>
+        </template>
+    
+    </affichage-facture>
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const affichageFacture={
+            template:`<div class="facture">
+                <slot></slot>
+                <div class="footer">
+                <slot name="footer">Footer par defaut </slot>
+                </div>
+                </div>`,
+                
+        };
+        const app = Vue.createApp({
+           components:{
+            affichageFacture
+           }
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

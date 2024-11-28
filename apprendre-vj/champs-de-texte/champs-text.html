@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evenement personnalisé avec vue.js</title>
+</head>
+<body>
+    <div id="app">
+        <h1>Evenement personnalisé avec un champ</h1>
+        <text-input :text-value="valeurSaisie" @text-changed="onTextChanged"></text-input>
+        <p>vous avez saisi : {{ valeurSaisie }}</p>
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const TextInput = {
+            template: `
+                <input 
+                    type="text" 
+                    :value="textValue" 
+                    @input="onSaisi" 
+                    placeholder="saisir un texte">
+            `,
+            props: {
+                textValue: String
+            },
+            methods: {
+                onSaisi(event) {
+                    this.$emit('text-changed', event.target.value);
+                }
+            }
+        };
+
+        const app = Vue.createApp({
+            components: {
+                TextInput
+            },
+            data() {
+                return {
+                    valeurSaisie: ''
+                };
+            },
+            methods: {
+                onTextChanged(newValue) {
+                    this.valeurSaisie = newValue;
+                }
+            }
+        });
+
+        app.mount("#app");
+    </script>
+</body>
+</html>

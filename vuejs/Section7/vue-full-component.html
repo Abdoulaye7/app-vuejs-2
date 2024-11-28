@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liaison bidirectionnelle</title>
+    <style>
+        .composant1{
+            border: 1px solid red;
+            color: red;
+            padding-left: 5px;
+        }
+        .composant2{
+            border: 1px solid blue;
+            color: blue;
+            padding-left: 5px;
+        }
+        .composant3{
+            border: 1px solid purple;
+            color: purple;
+            padding-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+       <h2>Choix du compsant</h2>
+       <p>
+        <label ><input type="radio" name="opt" :value="0" v-model="choix">composant1</label>
+        <label ><input type="radio" name="opt" :value="1" v-model="choix">composant2</label>
+        <label ><input type="radio" name="opt" :value="2" v-model="choix">composant3</label>
+       </p>
+       <h2>Composant choisi</h2>
+       <component v-bind:is="isSelectedComponent"></component>
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const composant1 ={
+            template:`<div class="composant1">
+                <p>ceci est un composant1</p>`
+        }
+        const composant2 ={
+            template:`<div class="composant2">
+                <p>ceci est un composant2</p>`
+        }
+        const composant3={
+            template:`<div class="composant3">
+                <p>ceci est un composant3</p>`
+        }
+        const app = Vue.createApp({
+            components:{
+                composant1,composant2,composant3
+            },
+            data(){
+             return{
+                choix:0,
+                composants:["composant1","composant2","composant3"],
+             }
+
+            },
+            computed:{
+                isSelectedComponent(){
+                    return this.composants[this.choix];
+                }
+
+            },
+            methods:{
+                
+            }
+
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evenemenent avec les components</title>
+</head>
+<body>
+    <div id="app">
+      <h2>Compteur </h2>
+      <p><mon-bouton></mon-bouton></p>
+      <mon-bouton v-model:nb-click="nombreClicks"></mon-bouton>
+      <p>le nombre de click : {{nombreClicks}}</p>
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const MonBouton={
+                template: `<input type="button" v-model:value="nbClick" v-on:click="onClick"`,
+                props:{
+                    nbClick: {type:Number,default:0}
+                },
+                
+                emits:['update:nbClick'],
+                methods:{
+                    onClick(event){
+                        const newValue = parseInt(event.target.value)+1;
+                        event.target.value = newValue;
+                        this.$emit('update:nbClick',newValue);
+                    }
+                }
+            };
+        const app = Vue.createApp({
+            components:{
+                MonBouton
+            },
+            data(){
+                return{
+                    nombreClicks:10
+                }
+
+            },
+            computed:{
+
+            },
+            methods:{
+                handleOnClick(event){
+                    this.nombreClicks = this.nbClick;
+                }
+                
+            }
+
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

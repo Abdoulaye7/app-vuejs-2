@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestions des voitures vendus par une concession</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Concession {{ concession.nom }}</h1>
+        <h2>Voitures en vente de niveau crit’air au plus {{ critair }}</h2>
+    <!-- Composant de saisie de voiture qui n'est créé que lorsqu'il est nécessaire -->
+    <button @click="onAjouterVoiture">Ajouter une voiture</button>
+
+    <!-- Liste des voitures -->
+    <liste-voitures :voitures="concession.voitures" :critair="critair"></liste-voitures>
+
+    <!-- Le composant DialogueVoiture est affiché seulement si dialogueCree est vrai -->
+    <dialogue-voiture v-if="dialogueCree" @valider="onValiderAjouterVoiture" @annuler="onAnnulerAjouterVoiture"></dialogue-voiture>
+</div>
+
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const DialogueVoiture={
+            template:
+            `<div class="dialog">
+                    <p>
+                        Numéro série : <input v-model="voiture.serie" type="text"><br>
+                        Modèle : <input v-model="voiture.modele" type="text"><br>
+                        Puissance : <input v-model.number="voiture.puissance" type="number" step="1"> ch<br>
+                        Niveau Crit'air : <input v-model.number="voiture.critair" type="number" step="1">
+                    </p>
+                    <p>
+                        <input type="button" value="Valider" @click="onValider">
+                        <input type="button" value="Annuler" @click="onAnnuler">
+                    </p>
+                </div>`,
+            emits:['valider','annuler'],
+           data(){
+             return{
+                voiture: {serie:'',modele:'',puissance:0,critair:6},
+             }
+           },
+           methods:{
+            onValider(){
+                this.$emit('valider',{...this.voiture});
+            },
+            onAnnuler(){
+                this.$emit('annuler');
+            }
+           }
+        };
+         const ListeVoitures ={
+            template:
+            `<p>{{nombreVoituresAffichees}} voitures :</p>
+            <ul>
+                <li v-for="v of voitures" :key="v.serie" :data-serie="v.serie" v-show="voitureAffichable(v)">
+                    Modèle {{v.modele}} : {{v.puissance}} ch, {{v.critair}} <span v-show="assuranceElevee(v)">(assurance +)</span>
+                </li> 
+            </ul>`,
+           props:{
+            voitures:{type:Array,required:true},
+            critair:{type:Number,default:6}
+           },
+           computed:{
+            nombreVoituresAffichees(){
+                
+                return this.voitures.filter(v => this.voitureAffichable(v)).length;   
+            }
+           },
+           methods:{
+            assuranceElevee(v){
+                return v.puissance >= 150;
+            },
+            voitureAffichable(v){
+                return v.critair <= this.critair;
+            }
+           }
+          };
+        const app = Vue.createApp({
+          components:{
+            ListeVoitures,DialogueVoiture
+          },
+            data(){
+                return{
+                    concession: {
+                        nom: 'Concession Automobiles XYZ',
+                        voitures: [
+                            { serie: "RNZ2358", modele: "REUNO Zooée", puissance: 135, critair: 1 },
+                            { serie: "PJ2095487", modele: "PEUJO 509", puissance: 200, critair: 3 }
+                        ]
+                    },
+                     critair: 5,
+                        dialogueCree:false,
+                    
+                };
+            },
+            computed:{
+
+            },
+            methods:{
+                onAjouterVoiture(){
+                    this.dialogueCree=true;
+                },
+                onValiderAjouterVoiture(v) {
+                this.concession.voitures.push(v);
+                this.dialogueCree = false;
+                },
+                onAnnulerAjouterVoiture() {
+                this.dialogueCree = false;
+                
+                 } 
+            }
+
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

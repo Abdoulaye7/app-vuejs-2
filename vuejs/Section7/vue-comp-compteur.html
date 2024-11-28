@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Composant</title>
+</head>
+<body>
+    <div id="app">
+       <h1>Compteur</h1>
+       <editeur-valeur v-model="valeur" etiquette="Valeur du compteur"></editeur-valeur>
+       <afficheur-compteur  :valeur="valeur" :pas="pas"></afficheur-compteur>
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const EditeurValeur ={
+            template:`<span>message : {{etiquette }}
+                <input  @change="onChange" type="number"  v-bind:step="pas" :value="modelValue">
+                </span>`,
+            props:{
+                etiquette :{type:String,required:true},
+                modelValue : {type:Number,required:true},
+                pas :   {type:Number,default:1},
+
+            },
+            emits:['change'],
+            methods:{
+                onChange(e){
+                 
+                        this.$emit('update:modelValue',+e.target.value);
+                }
+            }
+
+        };
+        const AfficheurCompteur ={
+            template:`<p >Compteur</p>
+            <ul>
+             <li>valeur du compteur : {{valeur}}</li>
+             <li>Pas : {{pas}}</li>
+             </ul>`
+            ,
+            props:{
+                valeur:{type:Number, required:true},
+                pas:{type:Number,default:1},
+            },
+           
+            
+        };
+        const app = Vue.createApp({
+            components:{
+                AfficheurCompteur,EditeurValeur 
+            },
+            data(){
+                return{
+                    valeur: 0,
+                    pas: 1
+                };
+
+            },
+            computed:{
+
+            },
+            methods:{
+                onChangeParent(valeur){
+                  this.valeur = valeur;
+                }
+                
+            }
+
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

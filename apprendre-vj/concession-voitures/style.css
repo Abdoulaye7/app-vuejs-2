@@ -1,0 +1,156 @@
+/* Reset des marges et padding de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Corps de la page avec fond coloré et police moderne */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    padding: 20px;
+    color: #333;
+    position: relative;
+}
+
+/* Conteneur principal de l'application */
+#app {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Style du bouton "Ajouter une voiture" */
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Titre de la concession */
+h1, h2 {
+    font-family: 'Arial', sans-serif;
+    color: #4CAF50;
+    text-align: center;
+}
+
+/* Section liste des voitures */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Style pour l'affichage des voitures avec "assurance +" */
+span {
+    background-color: #FF5733;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 3px;
+}
+
+/* Dialogue de saisie (modale) */
+.dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+    z-index: 1001; /* Augmenter le z-index pour s'assurer qu'il soit au-dessus des autres éléments */
+}
+
+/* Champs de saisie dans le dialogue */
+.dialog input[type="text"],
+.dialog input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Boutons du dialogue */
+.dialog input[type="button"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+}
+
+.dialog input[type="button"]:hover {
+    background-color: #45a049;
+}
+
+.dialog input[type="button"]:last-child {
+    background-color: #e74c3c;
+}
+
+.dialog input[type="button"]:last-child:hover {
+    background-color: #c0392b;
+}
+
+/* Overlay (fond semi-transparent) */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000; /* Assurez-vous que l'overlay a un z-index inférieur à celui du dialogue */
+}
+
+/* Améliorations responsive */
+@media screen and (max-width: 600px) {
+    #app {
+        padding: 15px;
+    }
+
+    h1, h2 {
+        font-size: 1.2rem;
+    }
+
+    li {
+        font-size: 14px;
+    }
+
+    button {
+        width: 100%;
+    }
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion stock</title>
+    <link rel="stylesheet" href="assets/stock.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Gestion d'un inventaire interactif</h1>
+        <div class="container">
+            <div class="newform">
+                <h1>Ajout de produits</h1>
+                <form @submit.prevent="addProduct">
+                    <p><input type="text" placeholder="Saisir le nom" v-model="newName"></p>
+                    <p><input type="number" placeholder="Saisir le prix unitaire" v-model="newPrice"></p>
+                    <p><input type="number" placeholder="Saisir la quantité" v-model="newQty"></p>
+                    <p>
+                        <select v-model="newCategory">
+                            <option v-for="c of categoryTab" :value="c">{{ c }}</option>
+                        </select>
+                    </p>
+                    <p><input type="checkbox" v-model="stock"> En stock</p>
+                    <p><input type="submit" value="Ajouter"></p>
+                </form>
+            </div>
+        </div>
+        <div class="listeProduct">
+            <h2>Liste des produits disponibles</h2>
+            <p v-if="isProductListEmpty()">Aucun produit disponible pour le moment</p>
+            <ul v-else>
+                <li v-for="product of products" :key="product.name">
+                    {{ product.name }} - {{ product.price }}€ - {{ product.qty }} unités - {{ product.category }} - 
+                    {{ product.stock ? 'Oui' : 'Non' }}
+                </li>
+            </ul>
+            <p>Total produit dans l'inventaire : {{totalProduct}}</p>
+            <p>Valeur totale des produits en stock : {{ totalStockValue }} €</p>
+        </div>
+       
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    newName: '',
+                    newPrice: '',
+                    newQty: '',
+                    categoryTab: ['Maison', 'Mode','Electronique'],
+                    newCategory: 'Electronique',
+                    products: [],
+                    stock: false,
+                };
+            },
+            computed:{
+                totalProduct(){
+                    return this.products.length;
+                },
+                // Valeur totale des produits en stock
+                totalStockValue() {
+                    return this.products.reduce((total, product) => {
+                        return product.stock ? total + (product.price * product.qty) : total;
+                    }, 0);
+                }
+
+            },
+            methods: {
+                isProdcutStock() {
+                    return this.stock ? 'Oui' : 'Non';
+                },
+                isProductListEmpty() {
+                    return this.products.length === 0;
+                },
+                addProduct() {
+                    if (this.newName.trim() && this.newCategory.trim()) {
+                        this.products.push({
+                            name: this.newName,
+                            price: this.newPrice,
+                            qty: this.newQty,
+                            category: this.newCategory,
+                            stock: this.stock
+                        });
+                    }
+                    this.reset();
+                },
+                reset() {
+                    this.newName = '';
+                    this.newPrice = '';
+                    this.newQty = '';
+                    this.newCategory = this.categoryTab[0];
+                    this.stock = false;
+                }
+            }
+        });
+        app.mount("#app");
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des colis:</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Transporteur : {{transporteur}} </h1>
+        <h2>Livraison : {{livraison.identifiant}} </h2>
+       
+         <tableau-colis :colis="livraison.colis" @enlever="onEnlever"></tableau-colis>
+    </div>
+    <script src="vue.global.js"></script>
+    <script src="tableauColis.js"></script>
+    <script>
+        const app = Vue.createApp({
+            components:{
+                tableauColis
+            },
+            data(){
+                return {
+                    livraison:{
+                        identifiant:'alant69111',
+                        colis: [
+                            { id: 1, format: 0, poids: 1.2 },
+                            { id: 2, format: 1, poids: 2.8 },
+                            { id: 3, format: 2, poids: 3.0 },
+                            // Ajoutez d'autres colis si nécessaire
+                        ]
+                        },
+                        transporteur:'alant Transport 68',
+
+                    };
+                
+
+            },
+            computed:{
+
+            },
+            methods:{
+                enleveColisId(id){
+                    const index = this.livraison.colis.findIndex(c => c.id ===id);
+                    if(index !=1){
+                        this.livraison.colis.splice(index,1);
+                    }
+
+                },
+                onEnlever(e) {
+                    this.enleveColisId(e);
+                    }
+                
+            }
+
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

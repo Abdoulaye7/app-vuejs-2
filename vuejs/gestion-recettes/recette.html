@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des recettes</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <div id="app">
+      <h1>Gestion de recettes</h1>
+      <div class="container">
+       <div class="newform">
+        <h2>Formulaire de recette</h2>
+        <form @submit.prevent="addRecipe">
+            <p><input v-model="newRecipeName" placeholder="Nom de la recette"></p>
+            <p><input v-model="newRecipeDescription" placeholder="Description de la recette"></p>
+            <p>
+                <select v-model="newRecipeCuisine">
+                    <option v-for="t of recetteType" :value="t">{{t}} cuisine</option>
+                </select>
+            </p>
+            <button type="submit">Ajouter</button>
+        </form>
+       </div>
+       
+       <div class="section-table">
+        <div>
+            <input type="checkbox" v-model="cuisineAffichee"> Affiche cuisine
+        </div>
+        <table border="1px">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th v-show="cuisineAffichee">Cuisine</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(recipe, i) of filteredRecipes" :key="i">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ recipe.name }}</td>
+                    <td>{{ recipe.description }}</td>
+                    <td v-show="cuisineAffichee">{{ recipe.cuisine }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <button @click="filter = 'all'">Toutes</button>
+            <button @click="filter = 'Italienne'">Italiennes</button>
+            <button @click="filter = 'Française'">Françaises</button>
+            <button @click="filter = 'Asiatique'">Asiatiques</button>
+            <button @click="filter = 'Mexicaine'">Mexicaines</button>
+        </div>
+       </div>
+      </div>
+    </div>
+    <script src="vue.global.js"></script>
+    <script src="main.js"></script>
+    <script>
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

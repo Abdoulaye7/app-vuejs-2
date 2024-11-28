@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liaison bidirectionnelle</title>
+</head>
+<body>
+    <div id="app">
+     <h1>Gestion des événements personnalisés avec les select</h1>
+     
+     <langue-select v-model="langueSelectionne"></langue-select>
+      <p>vous avez selectionnee : {{langueSelectionne}}</p>
+      <signup-form @form-submitted="onAjout"></signup-form>
+      <p>Info user: {{infoUser}}</p>
+    </div>
+    <script src="vue.global.js"></script>
+    <script src="LangueSelect.js"></script>
+    <script src="SignupForm.js"></script>
+    <script>
+        const app = Vue.createApp({
+            
+            components:{
+                LangueSelect,
+                SignupForm
+
+            },
+            data(){
+                return{
+                    langueSelectionne:'',
+                    nomUser:'',
+                    emailUser:'',
+
+                };
+
+            },
+            computed:{
+                infoUser(){
+                    return this.nomUser+" "+this.emailUser;
+                }
+
+            },
+            methods:{
+                onAjout(event){
+                    this.nomUser=event.nom;
+                    this.emailUser=event.email;
+                }
+                
+            }
+
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

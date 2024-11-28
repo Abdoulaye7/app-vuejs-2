@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liaison bidirectionnelle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        p {
+            margin: 10px 0;
+        }
+        input[type="button"] {
+            padding: 10px 15px;
+            margin-right: 5px;
+            background-color: #64B1FA;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="button"]:hover {
+            background-color: #3a94d6;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h2>Gestion d'un compteur</h2>
+        <p>Compteur : {{ compteur }}</p>
+        <p><input type="number" v-model.number="pas" placeholder="Entrez un pas (ex: 1)" min="1"></p>
+        <p>
+            <input type="button" value="Augmenter" @click="augmenterCompteur">
+            <input type="button" value="Diminuer" @click="diminuerCompteur">
+            <input type="button" value="Réinitialiser" @click="reinitialiserCompteur">
+        </p>
+        <p v-if="multipleDix && compteur !== 0" :style="{ backgroundColor: color, padding: '10px', borderRadius: '5px' }">
+            {{ compteur }} est un multiple de 10 !
+        </p>
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    compteur: 0,
+                    pas: 1,
+                    color: '#64B1FA',
+                };
+            },
+            computed: {
+                multipleDix() {
+                    return this.compteur !== 0 && this.compteur % 10 === 0;
+                },
+            },
+            methods: {
+                augmenterCompteur() {
+                    this.compteur += this.pas;
+                },
+                diminuerCompteur() {
+                    this.compteur -= this.pas;
+                },
+                reinitialiserCompteur() {
+                    this.compteur = 0;
+                },
+            },
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

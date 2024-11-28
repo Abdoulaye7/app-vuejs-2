@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evenement personnalisé</title>
+    <link rel="stylesheet" href="style.css">  
+</head>
+<body>
+    <div id="app">
+      <h1>Interagir avec un champ</h1>
+      <p><text-input></text-input></p>
+      <p><text-input v-model:valeur="saisi"></text-input></p>
+      <p class="show">{{saisi}}</p>
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const TextInput ={
+            template: `
+                <input 
+                    type="text" 
+                    :value="valeur" 
+                    @input="onSaisi" 
+                    placeholder="saisir un texte">
+            `,
+            props:{
+                valeur:{type:String,default:'Bonjour'}
+            },
+            emits:['update:valeur'],
+            methods:{
+                onSaisi(event){
+                    const newVal = event.target.value;
+                    this.$emit('update:valeur',newVal);
+                }
+            }
+        };
+        const app = Vue.createApp({
+            components:{
+                TextInput
+            },
+            data(){
+                return{
+                    saisi:'HELLO',
+                }
+
+            },
+            computed:{
+
+            },
+            methods:{
+                
+            }
+
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

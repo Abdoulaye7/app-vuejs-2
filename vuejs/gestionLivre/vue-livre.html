@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Livre</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <h1>Bienvenu(e) dans votre application Gestion de Livres</h1>
+            <div class="formulaire">
+                <input v-model="newBookTitle" placeholder="Titre du livre">
+                <input v-model="newBookAuthor" placeholder="Auteur du livre">
+                <button @click="addBook">Ajouter</button>
+              </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>identifiant</th>
+                        <th>title</th>
+                        <th>author</th>
+                        <th>read</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for=" book in books">
+                        <td>{{book.id}}</td>
+                        <td>{{ book.title}}</td>
+                        <td>{{ book.author}}</td>
+                        <td>{{ book.read}}</td>
+                       
+                    </tr>
+                </tbody>
+            </table>
+            <!--<div class="btn-add">
+                <button @click="addBook()" >Add</button>
+            </div>-->
+           
+     
+        
+    </div>
+        <script src="vue.global.js"></script>
+        <script src="main.js"></script>
+        <script>
+            const vm =app.mount("#app");
+        </script>
+</body>
+</html>

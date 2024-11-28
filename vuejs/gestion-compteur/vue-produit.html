@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liaison bidirectionnelle</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <div id="app">
+       <div class="container" v-bind:style="getFormStyle()">
+        <h1>Gestion d'ajout de produits</h1>
+        <form @submit.prevent="handleSubmit">
+            <label for="nom">Nom :</label>
+        <p><input type="text" v-model="name" placeholder="Saisir le nom du produit"></p>
+        <label for="nom" >Quanité  :</label>
+        <p><input type="number" v-model="qty" placeholder="Saisir la quantité du produi"></p>
+        <input  
+                    type="submit" 
+                    value="Ajouter au panier" 
+                    v-show="isNameValid()"
+                    :disabled="!isQuantityValid()"
+        >
+        </form>
+       </div>
+       <p v-if="confirmationMessage" class="confirmation">
+         {{ confirmationMessage }}
+    </p>
+       <p v-if="isProductListEmpty()">Momentanément indisponible</p>
+       <p v-else>
+        <ul v-for="product of products">
+            <li>{{product.name}} ... {{product.qty}}</li>
+        </ul>
+       </p>
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    name: '', // Nom du produit
+                    qty: 0,   // Quantité du produit
+                    products: [], // Liste des produits
+                    confirmationMessage: '' // Message de confirmation
+                };
+            },
+            methods: {
+                // Valide si le champ "Nom" est rempli
+                isNameValid() {
+                    return this.name.trim() !== '';
+                },
+                // Valide si la quantité est supérieure à 0
+                isQuantityValid() {
+                    return this.qty > 0;
+                },
+                // Vérifie si la liste de produits est vide
+                isProductListEmpty() {
+                    return this.products.length === 0;
+                },
+                // Style dynamique du formulaire en fonction de la quantité
+                getFormStyle() {
+                    return {
+                        backgroundColor: this.qty >= 10 ? 'lightgreen' : 'lightcoral'
+                    };
+                },
+                // Ajoute un produit et déclenche les interactions
+                handleSubmit() {
+                    if (this.isNameValid() && this.isQuantityValid()) {
+                        this.addProduct();
+                        this.showConfirmationMessage();
+                        this.resetForm();
+                    }
+                },
+                // Ajoute un produit à la liste
+                addProduct() {
+                    this.products.push({
+                        name: this.name.trim(),
+                        qty: this.qty
+                    });
+                },
+                // Affiche un message de confirmation
+                showConfirmationMessage() {
+                    this.confirmationMessage = `Le produit "${this.name}" avec une quantité de ${this.qty} a été ajouté au panier !`;
+
+                    // Effacer le message après 3 secondes
+                    setTimeout(() => {
+                        this.confirmationMessage = '';
+                    }, 3000);
+                },
+                // Réinitialise le formulaire
+                resetForm() {
+                    this.name = '';
+                    this.qty = 0;
+                }
+            }
+        });
+
+        const vm = app.mount("#app");
+    </script>
+
+</body>
+</html>

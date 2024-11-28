@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liaison bidirectionnelle</title>
+    <style>
+        .red{
+            color:red;
+        }
+        .grand{
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+    <h2>Votre commande</h2>
+    <ul>
+        <commande-client></commande-client>
+        <commande-client></commande-client>
+    </ul>
+    <super-avertissement></super-avertissement>
+    <super-avertissement class="grand"></super-avertissement>
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const superAvertissement={
+            template:`<p class="red">AVERTISSEMENT</p>`
+        }
+        const commandeClient ={
+            template:`<li> 1 {{nom}} : {{prixTTC}} EUR </li>`,
+            data(){
+                return{
+                    nom:'baguette',
+                    prixHT:1.2,
+                }
+            },
+            computed:{
+                prixTTC(){
+                    return this.prixHT*1.205;
+                }
+            }
+        }
+        const app = Vue.createApp({
+            components:{
+                commandeClient ,superAvertissement                
+            }
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

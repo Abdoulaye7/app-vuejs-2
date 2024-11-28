@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODOLIST</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Simple todoList</h1>
+        <p>nombre de tache : {{nombreDeTask}}</p>
+        <div class="formulaire">
+            <form @submit.prevent="addTask">
+                <p><input type="text" v-model="newTitle" placeholder="titre de votre tache"></p>
+                <p><input type="submit" value="Ajouter"></p>
+            </form>
+        </div>
+        <ul>
+            <li v-for="t of sortedTask()" :key="t.date" :class="{completed: t.completed}">
+                 <label> <input type="checkbox" v-model="t.completed" >
+                </label> {{t.title}} :  
+            </li>
+        </ul>
+        <input type="checkbox" v-model="hideCompleted" >Masquer les taches complétées
+
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const app = Vue.createApp({
+           
+            data(){
+                return{
+                    tasks:[{
+                        title:'Tache à faire',
+                        completed:false,
+                        date:Date.now()
+                    }],
+                    newTitle:'',
+                    newCompleted:false,
+                    hideCompleted:false
+
+                };
+
+            },
+            computed:{
+                nombreDeTask(){
+                    return this.tasks.length;
+                }
+
+            },
+            methods:{
+                addTask(){
+                     this.tasks.push({
+                        title:this.newTitle,
+                        completed:this.newCompleted,
+                        date:Date.now()
+                    })
+                    this.newTitle = '';
+                },
+                sortedTask(){
+                   const sortedTask =  this.tasks.toSorted((a,b)=> a.completed > b.completed ? 1:-1)
+                   if(this.hideCompleted === true){
+                      return sortedTask.filter(t => t.completed === false)
+                   }
+                   return sortedTask
+                }
+                
+            }
+
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

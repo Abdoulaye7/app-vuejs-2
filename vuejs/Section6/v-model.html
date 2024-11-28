@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liaison bidirectionnelle</title>
+</head>
+<body>
+    <h1>Test de v-model</h1>
+    <div id="app">
+        <h2>Test avec les saisies de champs formulaire</h2>
+        <p><input v-model="message1" placeholder="edit me"></p>
+        <p>Vous avez tapé {{reversed(message1)}} </p>
+
+        <h2>Test avec les saisies de champs formulaire</h2>
+        <textarea v-model="message2"></textarea>
+        <p>Vous avez tapé {{reversed(message2)}} </p>
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const app = Vue.createApp({
+            data(){
+               return{
+                 message1:'',
+                 message2:'',
+               }
+
+            },
+            computed:{
+
+            },
+            methods:{
+                reversed(txt){
+                    return txt.split('').reverse().join('');
+                }
+
+            }
+
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

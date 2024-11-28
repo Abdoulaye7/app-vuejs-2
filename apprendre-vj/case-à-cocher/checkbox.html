@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evenement sur les cases à cocher</title>
+</head>
+<body>
+    <div id="app">
+        <h1>Case à cocher</h1>
+        <!-- Utilisation de v-model avec update:modelValue -->
+        <checkbox-group v-model="selectedCases"></checkbox-group>
+        <p>Valeur sélectionnée : {{ selectedCases }}</p>
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const checkboxGroup ={
+            template:`
+              <p><input type="checkbox"
+                 :value="1"
+                 checked="modelValue.includes(1)"
+                 @change="onChange(1)"
+              >choix 1</p>
+              <p><input type="checkbox"
+                :value="2"
+                @change="onChange(2)"
+                checked="modelValue.includes(2)"
+              >choix 2</p>
+              <p><input type="checkbox"
+               :value="3"
+               checked="modelValue.includes(3)"
+               @change="onChange(3)"
+              >choix 3</p>
+              
+            `,
+            props:{
+                modelValue: {
+                    type: Array,
+                    default: () => []
+                },
+            },
+            emits: ['update:modelValue'],
+            methods: {
+                onChange(value) {
+                    const newValue = [...this.modelValue];
+                    const index = newValue.indexOf(value);
+
+                    if (index === -1) {
+                        newValue.push(value); // Ajouter la valeur
+                    } else {
+                        newValue.splice(index, 1); // Retirer la valeur
+                    }
+
+                    // Émettre l'événement update:modelValue pour mettre à jour le parent
+                    this.$emit('update:modelValue', newValue);
+                }
+            }
+
+        };
+        const app = Vue.createApp({
+            components:{
+                checkboxGroup
+            },
+            data(){
+                return {
+                    selectedCases: [1, 2, 3]// Liste des cases sélectionnées
+                };
+
+            },
+            computed:{
+
+            },
+            methods:{
+                
+            }
+
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

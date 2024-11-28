@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liaison bidirectionnelle</title>
+</head>
+<body>
+    <div id="app">
+    <h2>Test augmenter un compteur d'un pas</h2>
+    <p><input type="button" @click="augmenteCompteur" value="Augmenter"></p>
+    <p><input type="button" @click="diminueCompteur" value="Diminuer"></p>
+    <p>Pas du compteur : <input type="number" v-model="pas" min="1" max="10"><p></p>
+    <p>vous avez cliqué : {{compteur}}</p>
+    <u>
+          <li>Valeur du compteur : {{compteur}}</li>
+        
+          <li>Pas du compteur : {{pas}}</li>
+        
+        </ul>
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const app = Vue.createApp({
+            data(){
+             return{
+                compteur:0,
+                pas:1,
+             }
+            },
+            computed:{
+
+            },
+            methods:{
+                augmenteCompteur(){
+                    this.compteur+=this.pas;
+                },
+                diminueCompteur(){
+                    this.compteur-=this.pas;
+                }
+                
+            }
+
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>

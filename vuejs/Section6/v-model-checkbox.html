@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liaison bidirectionnelle</title>
+</head>
+<body>
+    <div id="app">
+          <h2>Test case à cocher</h2>
+          <label ><input type="checkbox" value="toto" v-model="checkbox1">Option :</label>
+          <p>options: {{choisie(checkbox1)}}</p>
+
+          <h2>Test sur une case du tableau</h2>
+          <label ><input type="checkbox" value="toto" v-model="checkbox1b">Option :</label>
+          <p>options: {{choisie(checkbox1b)}}</p>
+
+          <h2>Test avec plusieurs cases sur meme variable</h2>
+          <label ><input type="checkbox" value="option 1" v-model="checkbox2">Option 1 :</label>
+          <label ><input type="checkbox" value="option 2" v-model="checkbox2">Option 2:</label>
+          <label ><input type="checkbox" value="option 3" v-model="checkbox2">Option 3:</label>
+          <p>options: {{choisies(checkbox2)}}</p>
+
+          <h2>Test avec plusieurs cases sur meme variable avec tableau non vide</h2>
+          <label ><input type="checkbox" value="option 1" v-model="checkbox3">Option 1 :</label>
+          <label ><input type="checkbox" value="option 2" v-model="checkbox3">Option 2:</label>
+          <label ><input type="checkbox" value="option 3" v-model="checkbox3">Option 3:</label>
+          <p>options: {{choisies(checkbox3)}}</p>
+
+          <h2>Test avec liste déroulant</h2>
+          <p>choissez la taille :
+            <select v-model="tailleSectionnee" >
+                <option v-for="t of taille" v-bind:value="t">{{t}} taille</option>
+              </select>
+          </p>
+          <p>taille choisie : {{tailleSectionnee}}</p>
+    </div>
+    <script src="vue.global.js"></script>
+    <script>
+        const app = Vue.createApp({
+            data(){
+             return{
+                checkbox1:false,
+                checkbox1b:[],
+                checkbox2: ['option 1'],
+                checkbox3:['Option obligatoire'],
+                taille:['petite','moyenne','grande'],
+                tailleSectionnee:'moyenne',
+             };
+            },
+            computed:{
+
+            },
+            methods:{
+                choisie(choix){
+                    return choix ? ' choisie' : 'non choisie';
+                },
+                choisies(choix){
+                    return choix.join(',');
+                }
+                
+            }
+
+        });
+        const vm = app.mount("#app");
+    </script>
+</body>
+</html>
